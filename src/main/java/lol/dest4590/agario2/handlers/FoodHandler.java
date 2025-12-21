@@ -1,5 +1,6 @@
 package lol.dest4590.agario2.handlers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lol.dest4590.agario2.models.Food;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.TextMessage;
@@ -14,28 +15,35 @@ import static lol.dest4590.agario2.util.PosUtil.distance;
 
 public class FoodHandler extends TextWebSocketHandler {
     private final ArrayList<Food> foodList = new ArrayList<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         try {
-            session.sendMessage(new TextMessage(foodList.toString()));
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(foodList)));
         } catch (Exception e) {
             System.out.println("Error sending food list: " + e.getMessage());
         }
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 100)
     public void spawnFood() {
-        Food newFood = new Food((int) (Math.random() * 1000) - 500, (int) (Math.random() * 1000) - 500, 10);
+        int world = 1000;
+
+        int x = (int) (Math.random() * world) - world / 2;
+        int y = (int) (Math.random() * world) - world / 2;
+
+        Food newFood = new Food(x, y, 10);
         foodList.add(newFood);
     }
+
 
     @Scheduled(fixedRate = 100)
     public void processFoodCollisions() {
         sessions.forEach((session, player) -> {
             foodList.removeIf(food -> {
-                double distance = distance(food.getX(), food.getY(), player.getX(), player.getY());
-                if (distance < player.getRadius()) {
+                double d = distance(food.getX(), food.getY(), player.getX(), player.getY());
+                if (d < player.getRadius()) {
                     player.setRadius(player.getRadius() + food.getSize() / 5);
                     sendPlayerUpdates();
                     return true;

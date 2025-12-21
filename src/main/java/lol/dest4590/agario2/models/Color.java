@@ -29,4 +29,5 @@ public enum Color {
             case GRAY -> "#808080";
         };
     }
+
 }

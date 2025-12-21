@@ -12,22 +12,12 @@ import static lol.dest4590.agario2.handlers.PlayerHandler.sendPlayerUpdates;
 public class PlayerUtil {
     public static void processInput(Player player) {
         Input input = player.getInput();
+        if (input == null) return;
 
-        if (input != null) {
-            {
-                if (input.getXAxis() != null && input.getXAxis() >= 10) {
-                    input.setXAxis(input.getXAxis() / 2);
-                }
-
-                if (input.getYAxis() != null && input.getYAxis() >= 10) {
-                    input.setYAxis(input.getYAxis() / 2);
-                }
-            }
-
-            player.setX(player.getX() + (input.getXAxis() != null ? input.getXAxis() : 0));
-            player.setY(player.getY() + (input.getYAxis() != null ? input.getYAxis() : 0));
-        }
+        player.setX(player.getX() + (input.getXAxis() != null ? input.getXAxis() : 0));
+        player.setY(player.getY() + (input.getYAxis() != null ? input.getYAxis() : 0));
     }
+
 
     public static void processWeightLose(Player player) {
         player.setWeightLoseTick(player.getWeightLoseTick() + 1);

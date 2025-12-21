@@ -19,11 +19,23 @@ import static lol.dest4590.agario2.configs.WebSocketConfig.sessions;
 public class PlayerHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        Player newPlayer = new Player(session.getId(), 0, 0, 10, "Player" + session.getId().substring(0, 5), Color.getRandomColor().getHex(), new Input(), 0);
+        Player newPlayer = new Player(
+                session.getId(), 0, 0, 10,
+                "Player" + session.getId().substring(0, 5),
+                Color.getRandomColor().getHex(),
+                new Input(), 0
+        );
 
         sessions.put(session, newPlayer);
         System.out.println("New connection established: " + session.getId());
+
+        try {
+            session.sendMessage(new TextMessage("self:" + session.getId()));
+        } catch (IOException e) {
+            System.out.println("Error sending self id: " + e.getMessage());
+        }
     }
+
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
@@ -70,6 +82,8 @@ public class PlayerHandler extends TextWebSocketHandler {
 
                 String playerJson = objectMapper.writeValueAsString(allPlayersInfo);
                 session.sendMessage(new TextMessage(playerJson));
+
+                //TODO: Position logging
             } catch (IOException e) {
                 System.out.println("Error sending message to session " + session.getId() + ": " + e.getMessage());
             }
