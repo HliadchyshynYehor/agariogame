@@ -34,7 +34,7 @@ Alternatíva cez IntelliJ IDEA:
 
 2) Otvorenie klienta
 V prehliadači otvor:
-http://localhost:8080/index.html
+http://localhost:8080
 
 Ovládanie
 - WASD alebo šípky
