@@ -15,20 +15,12 @@ Ako otestovať multiplayer
 Budú to dve samostatné pripojenia a uvidíš dvoch hráčov.
 
 Požiadavky
-- Maven alebo Maven Wrapper (ak je v projekte mvnw)
+- IntelijIDEA , Maven
 - Prehliadač
 
 Spustenie
 
-1) Spustenie servera (Spring Boot)
-
-Ak používaš Maven Wrapper:
-./mvnw spring-boot:run
-
-Ak používaš Maven:
-mvn spring-boot:run
-
-Alternatíva cez IntelliJ IDEA:
+1)  IntelliJ IDEA:
 - Otvor projekt
 - Spusť triedu Agario2Application
 
