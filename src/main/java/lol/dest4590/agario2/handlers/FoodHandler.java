@@ -28,7 +28,9 @@ public class FoodHandler extends TextWebSocketHandler {
 
     @Scheduled(fixedRate = 100)
     public void spawnFood() {
-        int world = 1000;
+        if (foodList.size() >= 2000) return;
+
+        int world = 10000;
 
         int x = (int) (Math.random() * world) - world / 2;
         int y = (int) (Math.random() * world) - world / 2;
