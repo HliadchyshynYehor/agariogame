@@ -7,13 +7,44 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+
+<div id="startScreen">
+    <div class="menu-card">
+        <h1>Agario2</h1>
+
+        <input id="usernameInput" placeholder="Enter your nickname" maxlength="20">
+
+        <label for="colorInput">Choose your color</label>
+        <input id="colorInput" type="color" value="#4CC9F0">
+
+        <button id="startButton">Start game</button>
+
+        <div id="menuError"></div>
+    </div>
+</div>
+
+<div id="gameOverScreen">
+    <div class="menu-card">
+        <h1>Game Over</h1>
+        <p>You were eaten by another player.</p>
+        <button id="restartButton">Play again</button>
+    </div>
+</div>
+
 <div id="overlay">
-    <div id="status">Connecting...</div>
+    <div id="status">Not connected</div>
     <div id="instructions">Use WASD or Arrow keys to move</div>
+    <div>Your name: <span id="playerName">-</span></div>
     <div>Your size: <span id="size">10</span></div>
 </div>
+
+<div id="leaderboard">
+    <h3>Leaderboard</h3>
+    <ol id="leaderboardList"></ol>
+</div>
+
 <canvas id="gameCanvas"></canvas>
+
 <script src="/app.js"></script>
 </body>
 </html>
-

@@ -46,12 +46,30 @@ public class PlayerHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         ObjectMapper objectMapper = new ObjectMapper();
+
         try {
-            Input input = objectMapper.readValue(message.getPayload(), Input.class);
             Player player = sessions.get(session);
-            if (player != null) {
-                player.setInput(input);
+            if (player == null) {
+                return;
             }
+
+            String payload = message.getPayload();
+
+            if (payload.contains("\"type\":\"init\"")) {
+                var node = objectMapper.readTree(payload);
+
+                String username = node.has("username") ? node.get("username").asText() : player.getName();
+                String color = node.has("color") ? node.get("color").asText() : player.getColor();
+
+                player.setName(username);
+                player.setColor(color);
+
+                return;
+            }
+
+            Input input = objectMapper.readValue(payload, Input.class);
+            player.setInput(input);
+
         } catch (IOException e) {
             System.out.println("Error parsing message: " + e.getMessage());
         }

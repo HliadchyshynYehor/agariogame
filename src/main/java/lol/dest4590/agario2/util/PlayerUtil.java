@@ -40,7 +40,12 @@ public class PlayerUtil {
 
     public static void killPlayer(Player player) {
         try {
-            Objects.requireNonNull(getSessionByPlayer(player)).close();
+            WebSocketSession session = getSessionByPlayer(player);
+
+            if (session != null && session.isOpen()) {
+                session.sendMessage(new org.springframework.web.socket.TextMessage("gameOver"));
+                session.close();
+            }
         } catch (Exception e) {
             System.out.println("Error killing player: " + e.getMessage());
         }
